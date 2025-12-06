@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lordicon Hover on Card</title>
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <style>
+    .card {
+      width: 300px;
+      padding: 20px;
+      margin: 50px auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      font-family: Arial, sans-serif;
+      background: #fff;
+      cursor: pointer;
+    }
+    h2 {
+      margin-bottom: 15px;
+    }
+    p {
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="card">
+    <h2>Welcome</h2>
+
+    <!-- Lordicon with hover trigger -->
+    <lord-icon
+      id="icon"
+      src="https://cdn.lordicon.com/kthelypq.json"
+      trigger="loop-on-hover"
+      style="width:80px;height:80px">
+    </lord-icon>
+
+    <p>This is a sample card using a Lordicon animated icon. The icon hovers when you hover the card.</p>
+  </div>
+
+  <footer style="text-align: center; margin-top: 40px;">
+    <a href="https://lordicon.com/">Icons by Lordicon.com</a>
+  </footer>
+
+  <script>
+    const card = document.getElementById('card');
+    const icon = document.getElementById('icon');
+
+    // Forward the hover events from the card to the icon
+    card.addEventListener('mouseenter', () => {
+      icon.dispatchEvent(new Event('mouseenter'));
+    });
+
+    card.addEventListener('mouseleave', () => {
+      icon.dispatchEvent(new Event('mouseleave'));
+    });
+  </script>
+
+</body>
+</html>
