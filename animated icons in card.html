@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>CIRCLE ANIMATIONS COLLECTION N°2</title>
+
+<style>
+@import url("https://fonts.cdnfonts.com/css/thegoodmonolith");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #000;
+  color: #f0f0f0;
+  font-family: "TheGoodMonolith", monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 30px;
+  font-size: 24px;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1000px;
+}
+
+@media (max-width: 900px) {
+  .container { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 500px) {
+  .container { grid-template-columns: 1fr; }
+}
+
+.animation-container {
+  width: 220px;
+  height: 220px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.5);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: border-color .3s;
+  position: relative;
+}
+
+.animation-container:hover {
+  border-color: rgba(255,255,255,0.3);
+}
+
+.animation-title {
+  font-size: 12px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.circle-container {
+  width: 180px;
+  height: 180px;
+  position: relative;
+}
+
+/* corner decorations */
+.corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  opacity: 0;
+  transition: opacity .3s;
+  pointer-events: none;
+}
+
+.animation-container:hover .corner { opacity: 1; }
+
+.top-left { top:-8px; left:-8px; }
+.top-right { top:-8px; right:-8px; transform: rotate(90deg); }
+.bottom-left { bottom:-8px; left:-8px; transform: rotate(-90deg); }
+.bottom-right { bottom:-8px; right:-8px; transform: rotate(180deg); }
+</style>
+</head>
+
+<body>
+
+<h1>CIRCLE ANIMATIONS COLLECTION N°2</h1>
+
+<div class="container">
+  <div class="animation-container"><div class="animation-title">Radial Pulse</div><div id="radial-pulse" class="circle-container"></div></div>
+  <div class="animation-container"><div class="animation-title">Orbital Pulse</div><div id="orbital-pulse" class="circle-container"></div></div>
+  <div class="animation-container"><div class="animation-title">Pendulum Wave</div><div id="pendulum-wave" class="circle-container"></div></div>
+  <div class="animation-container"><div class="animation-title">Pulse Wave</div><div id="pulse-wave" class="circle-container"></div></div>
+  <div class="animation-container"><div class="animation-title">Concentric Rings</div><div id="concentric-rings" class="circle-container"></div></div>
+  <div class="animation-container"><div class="animation-title">Sequential Pulse</div><div id="sequential-pulse" class="circle-container"></div></div>
+  <div class="animation-container"><div class="animation-title">Oscillating Dots</div><div id="oscillating-dots" class="circle-container"></div></div>
+  <div class="animation-container"><div class="animation-title">Pulsing Grid</div><div id="pulsing-grid" class="circle-container"></div></div>
+  <div class="animation-container"><div class="animation-title">Spiral Galaxy</div><div id="spiral-galaxy" class="circle-container"></div></div>
+</div>
+
+<script>
+(function () {
+
+function addCorners() {
+  document.querySelectorAll(".animation-container").forEach(c => {
+    ["top-left","top-right","bottom-left","bottom-right"].forEach(pos => {
+      const el = document.createElement("div");
+      el.className = "corner " + pos;
+      el.innerHTML = `
+        <svg viewBox="0 0 512 512">
+          <polygon points="448,224 288,224 288,64 224,64 224,224 64,224 64,288 224,288 224,448 288,448 288,288 448,288" fill="white"/>
+        </svg>`;
+      c.appendChild(el);
+    });
+  });
+}
+
+function createCanvas(id, draw) {
+  const container = document.getElementById(id);
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = 180;
+  container.appendChild(canvas);
+  const ctx = canvas.getContext("2d");
+  let t = 0;
+  function animate(dt){
+    t += 0.01;
+    ctx.clearRect(0,0,180,180);
+    draw(ctx, t);
+    requestAnimationFrame(animate);
+  }
+  animate();
+}
+
+/* Animations */
+createCanvas("radial-pulse",(c,t)=>{
+  for(let r=10;r<80;r+=10){
+    c.beginPath();
+    c.arc(90,90,r+Math.sin(t+r)*3,0,Math.PI*2);
+    c.strokeStyle=`rgba(255,255,255,${1-r/80})`;
+    c.stroke();
+  }
+});
+
+createCanvas("orbital-pulse",(c,t)=>{
+  for(let i=0;i<20;i++){
+    const a=i/20*Math.PI*2+t;
+    c.beginPath();
+    c.arc(90+Math.cos(a)*60,90+Math.sin(a)*60,2,0,Math.PI*2);
+    c.fillStyle="white"; c.fill();
+  }
+});
+
+createCanvas("pendulum-wave",(c,t)=>{
+  for(let i=0;i<15;i++){
+    const x=20+i*10;
+    const y=20+Math.cos(t)*80;
+    c.beginPath();
+    c.moveTo(x,20);
+    c.lineTo(x,y);
+    c.strokeStyle="rgba(255,255,255,.4)";
+    c.stroke();
+  }
+});
+
+createCanvas("pulse-wave",(c,t)=>{
+  for(let i=0;i<30;i++){
+    const a=i/30*Math.PI*2;
+    const r=60+Math.sin(t+i)*5;
+    c.beginPath();
+    c.arc(90+Math.cos(a)*r,90+Math.sin(a)*r,2,0,Math.PI*2);
+    c.fillStyle="white"; c.fill();
+  }
+});
+
+createCanvas("concentric-rings",(c,t)=>{
+  for(let r=15;r<80;r+=15){
+    c.beginPath();
+    c.arc(90,90,r+Math.sin(t+r)*2,0,Math.PI*2);
+    c.strokeStyle="rgba(255,255,255,.6)";
+    c.stroke();
+  }
+});
+
+createCanvas("sequential-pulse",(c,t)=>{
+  for(let i=0;i<16;i++){
+    const a=i/16*Math.PI*2;
+    const p=Math.sin(t+i*.3);
+    c.beginPath();
+    c.arc(90+Math.cos(a)*(60+p*8),90+Math.sin(a)*(60+p*8),3,0,Math.PI*2);
+    c.fillStyle="white"; c.fill();
+  }
+});
+
+createCanvas("oscillating-dots",(c,t)=>{
+  for(let y=0;y<5;y++){
+    for(let x=0;x<20;x++){
+      c.beginPath();
+      c.arc(10+x*8,50+y*15+Math.sin(t+x*.2+y)*4,2,0,Math.PI*2);
+      c.fillStyle="white"; c.fill();
+    }
+  }
+});
+
+createCanvas("pulsing-grid",(c,t)=>{
+  for(let x=0;x<5;x++){
+    for(let y=0;y<5;y++){
+      const dx=(x-2)*20, dy=(y-2)*20;
+      const p=Math.sin(t+dx+dy)*2;
+      c.beginPath();
+      c.arc(90+dx,90+dy,p+2,0,Math.PI*2);
+      c.fillStyle="white"; c.fill();
+    }
+  }
+});
+
+createCanvas("spiral-galaxy",(c,t)=>{
+  for(let i=0;i<200;i++){
+    const r=i*.3;
+    const a=i*.2+t*.5;
+    c.beginPath();
+    c.arc(90+Math.cos(a)*r,90+Math.sin(a)*r,1,0,Math.PI*2);
+    c.fillStyle="rgba(200,220,255,.8)";
+    c.fill();
+  }
+});
+
+addCorners();
+})();
+</script>
+
+</body>
+</html>
