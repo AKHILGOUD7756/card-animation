@@ -4,5 +4,5 @@
 ## card filling color hover
 <img width="1206" height="308" alt="image" src="https://github.com/user-attachments/assets/f5e261b7-ff07-462d-a399-8bf26c59ef81" />
 
-# animated icons in card (card with animated icons with box)
+# animated icons in card (card with animated icons with box)   https://codepen.io/filipz/pen/KwwKRRr
 <img width="866" height="559" alt="image" src="https://github.com/user-attachments/assets/07d0fd3b-6bb8-43fa-8229-7714de48b16d" />
